@@ -6,7 +6,7 @@ Este projeto é uma API para um sistema de e-commerce desenvolvido em Node.js co
 
 - **Autenticação**: Sistema de autenticação de usuários.
 - **Produtos**: CRUD de produtos.
-- 
+  
 ## Tecnologias Utilizadas
 
 - **Node.js**: Plataforma de execução de JavaScript.
