@@ -96,7 +96,6 @@ app.delete('/products/delete', async (req, res) => {
     headers: req.headers
   });
 
-  console.log(body);
   res.status(statusCode).json(body);
 });
 
