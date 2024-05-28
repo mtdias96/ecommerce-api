@@ -29,7 +29,7 @@ export class SignInUseCase {
     if (!isPasswordValid) {
       throw new InvalidCredentials();
     }
-    console.log(env.jwtSecret);
+
     const accessToken = sign(
       { sub: account.id },
       env.jwtSecret,

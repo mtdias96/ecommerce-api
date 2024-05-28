@@ -1,4 +1,6 @@
 import { hash } from 'bcryptjs';
+import { sign } from 'jsonwebtoken';
+import { env } from '../../config/env';
 import { AccountAlreadyExists } from '../../errors/auth/AccountAlreadyExists';
 import { prismaClient } from '../../libs/prismaClient';
 
@@ -9,12 +11,15 @@ interface IInput {
   password: string;
 }
 
-type IOutput = void;
+interface IOutput {
+  accessToken: string;
+}
+
 
 export class SignUpUseCase {
   constructor(private readonly salt: number) { }
 
-  async execute({ email, fullname, password }: IInput): Promise<IOutput> {
+  async execute({ fullname,email, password }: IInput): Promise<IOutput> {
 
     const accountsAlreadyExists = await prismaClient.user.findUnique({
       where: { email }
@@ -28,10 +33,20 @@ export class SignUpUseCase {
 
     await prismaClient.user.create({
       data: {
-        email,
         fullname,
+        email,
         password: hashedPassword
       }
     });
+
+    const accessToken = sign(
+      { sub:email, },
+      env.jwtSecret,
+      { expiresIn: '1d' }
+    );
+
+
+    return {accessToken};
   }
+
 }

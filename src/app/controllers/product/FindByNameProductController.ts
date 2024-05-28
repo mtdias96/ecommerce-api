@@ -4,8 +4,9 @@ import { FindByIdUseCase } from '../../useCases/product/FindByIdUseCase';
 export class FindByIdController {
   constructor(private findByIdUseCase: FindByIdUseCase) { }
 
-  async handle(id: number): Promise<IResponse> {
+  async handle({params}): Promise<IResponse> {
     try {
+      const id = Number(params.id);
       const product = await this.findByIdUseCase.execute(id);
 
       return {
