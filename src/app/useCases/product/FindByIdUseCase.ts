@@ -10,10 +10,11 @@ export class FindByIdUseCase {
         where: { id }
       });
 
+
       return product;
     } catch (error) {
-      console.error('Erro ao buscar produto por ID:', error);
-      return null;
+      throw new Error('Produto não encontrado');
+
     }
   }
 }

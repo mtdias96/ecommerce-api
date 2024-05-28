@@ -1,18 +1,17 @@
 import express from 'express';
-import { SignInController } from '../app/controllers/auth/SignInController';
-import { SignUpController } from '../app/controllers/auth/SignUpController';
+
 import { CreateCategoryController } from '../app/controllers/product/CreateCategoryController';
 import { CreateProductController } from '../app/controllers/product/CreateProductController';
 import { DeleteProductController } from '../app/controllers/product/DeleteProductController';
-import { FindByIdController } from '../app/controllers/product/FindByNameProductController';
 import cors from '../app/middlewares/cors';
-import { SignInUseCase } from '../app/useCases/auth/SignInUseCase';
-import { SignUpUseCase } from '../app/useCases/auth/SignUpUseCase';
 import { CreateCategoryUseCase } from '../app/useCases/product/CreateCategoryUseCase';
 import { CreateProductUseCase } from '../app/useCases/product/CreateProductUseCase';
 import { DeleteProductUseCase } from '../app/useCases/product/DeleteProductUseCase';
 import { FindAllProductUseCase } from '../app/useCases/product/FindAllProductUseCase';
-import { FindByIdUseCase } from '../app/useCases/product/FindByIdUseCase';
+import { makeFindByIdController } from '../factories/Product/makeFindyByIdController';
+import { makeSignInController } from '../factories/auth/makeSignInController';
+import { makeSignUpController } from '../factories/auth/makeSignUpController';
+import { routeAdapter } from './adapters/routeAdapter';
 
 
 const app = express();
@@ -20,29 +19,9 @@ app.use(express.json());
 
 app.use(cors);
 
-app.post('/cadastrar', async (req, res) => {
-  const signUpUseCase = new SignUpUseCase(10);
-  const signUpController = new SignUpController(signUpUseCase);
+app.post('/cadastrar', routeAdapter(makeSignUpController()));
 
-  const { statusCode, body } = await signUpController.handle({
-    body: req.body,
-    headers: req.headers
-  });
-
-  res.status(statusCode).json(body);
-
-});
-
-app.post('/entrar', async (req, res) => {
-  const signInUseCase = new SignInUseCase();
-  const signInController = new SignInController(signInUseCase);
-
-  const { statusCode, body } = await signInController.handle({
-    body: req.body,
-    headers: req.headers
-  });
-  res.status(statusCode).json(body);
-});
+app.post('/entrar', routeAdapter(makeSignInController()));
 
 app.post('/product/cadastrar', async (req, res) => {
   const createProductUseCase = new CreateProductUseCase();
@@ -76,16 +55,7 @@ app.get('/product', async (req, res) => {
 
 });
 
-app.get('/product/:id', async (req, res) => {
-  const findByIdProduct = new FindByIdUseCase();
-  const product = new FindByIdController(findByIdProduct);
-  console.log(req.params.id);
-
-  const { statusCode, body } = await product.handle(Number(req.params.id));
-  res.status(statusCode).json(body);
-
-
-});
+app.get('/product/:id', routeAdapter(makeFindByIdController()));
 
 app.delete('/products/delete', async (req, res) => {
   const deleteUseCase = new DeleteProductUseCase();

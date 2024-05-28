@@ -1,6 +1,7 @@
 export interface IRequest {
   body: Record<string | number, any>
-  headers: Record<string, any> | null
+  headers?: Record<string, any> | null
+  params?: Record<string, string> | null
 }
 export interface IResponse {
   statusCode: number;
