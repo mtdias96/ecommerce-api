@@ -1,4 +1,4 @@
-import { FindByIdController } from '../../app/controllers/product/FindByNameProductController';
+import { FindByIdController } from '../../app/controllers/product/FindByIdProductController';
 import { makeFindyByIdUseCase } from './makeFindByIdUseCase';
 
 export function makeFindByIdController(){
