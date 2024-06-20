@@ -7,6 +7,8 @@ import { makeFindAllProductController } from '../factories/Product/makeFindAllPr
 import { makeFindByIdController } from '../factories/Product/makeFindyByIdController';
 import { makeSignInController } from '../factories/auth/makeSignInController';
 import { makeSignUpController } from '../factories/auth/makeSignUpController';
+import { makeAuthenticationMiddleware } from '../factories/makeAuthenticationMiddleware';
+import { middlewareAdapter } from './adapters/middlewareAdapter';
 import { routeAdapter } from './adapters/routeAdapter';
 
 
@@ -20,11 +22,14 @@ app.post('/cadastrar', routeAdapter(makeSignUpController()));
 
 app.post('/entrar', routeAdapter(makeSignInController()));
 
+app.get('/perfil',
+  middlewareAdapter(makeAuthenticationMiddleware()));
+
 app.post('/product/cadastrar', routeAdapter(makeCreateProductController()));
 
-app.get('/product', routeAdapter(makeFindAllProductController()));
+app.get('/produtos', routeAdapter(makeFindAllProductController()));
 
-app.get('/product/:id', routeAdapter(makeFindByIdController()));
+app.get('/produto/:id', routeAdapter(makeFindByIdController()));
 
 app.delete('/products/delete', routeAdapter(makeDeleteProductController()));
 

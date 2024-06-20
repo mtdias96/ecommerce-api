@@ -14,8 +14,6 @@ export class DeleteProductUseCase {
       where: { id }
     });
 
-    console.log(id);
-
     if (!productAlreadyExists) {
       throw new ProductAlreadyExists();
     }
