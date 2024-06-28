@@ -1,27 +1,37 @@
+
 import { ProductAlreadyExists } from '../../errors/product/ProductAlreadyExists';
 import { prismaClient } from '../../libs/prismaClient';
 
 interface IInput {
-  id: number;
+  id: string;
 }
 type IOutput = void;
 
-
 export class DeleteProductUseCase {
-
   async execute({ id }: IInput): Promise<IOutput> {
-    const productAlreadyExists = await prismaClient.product.findUnique({
+    const product = await prismaClient.product.findUnique({
       where: { id }
     });
 
-    if (!productAlreadyExists) {
+    if (!product) {
       throw new ProductAlreadyExists();
     }
 
-    await prismaClient.product.delete({
-      where: {
-        id: id
-      }
-    });
+    try {
+      await prismaClient.productVariation.deleteMany({
+        where: {
+          productId: id
+        }
+      });
+
+      await prismaClient.product.delete({
+        where: {
+          id: id
+        }
+      });
+    } catch (error) {
+      console.error(`Error deleting product with ID: ${id}`, error);
+      throw error;
+    }
   }
 }

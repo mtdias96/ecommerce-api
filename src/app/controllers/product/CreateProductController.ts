@@ -1,19 +1,22 @@
 import { ZodError, z } from 'zod';
 import { ProductAlreadyExists } from '../../errors/product/ProductAlreadyExists';
 import { IRequest, IResponse } from '../../interfaces/IController';
+import { prismaClient } from '../../libs/prismaClient';
 import { CreateProductUseCase } from '../../useCases/product/CreateProductUseCase';
-
 
 const schema = z.object({
   name: z.string().min(3),
   price: z.number(),
-  size: z.array(z.string()),
-  color: z.array(z.string()),
+  color: z.string(),
   description: z.string(),
-  quantity: z.number(),
   image: z.array(z.number()),
   categoryId: z.number(),
-  brand: z.string()
+  brand: z.string(),
+  gender: z.string(),
+  variations: z.array(z.object({
+    size: z.string(),
+    quantity: z.number().int(),
+  })),
 });
 
 export class CreateProductController {
@@ -21,9 +24,17 @@ export class CreateProductController {
 
   async handle({ body }: IRequest): Promise<IResponse> {
     try {
-      const { name, price, size, color, description, quantity, image, categoryId, brand } = schema.parse(body);
+      const { name, price, color, description, brand, image, categoryId, gender, variations } = schema.parse(body);
 
-      await this.createProductUseCase.excecute({ name, price, size, color, description, quantity, image, categoryId, brand });
+      const brandProduct = await prismaClient.brand.findFirst({
+        where: {name: brand}
+      });
+
+      if(!brandProduct){
+        throw new Error('Brand not exists');
+      }
+
+      await this.createProductUseCase.excecute({ name, price, color, description, image, categoryId, brand, gender, variations, brandProduct });
 
       return {
         statusCode: 204,

@@ -4,17 +4,16 @@ import { DeleteProductUseCase } from '../../useCases/product/DeleteProductUseCas
 
 
 const schema = z.object({
-  id: z.number(),
+  id: z.string(),
 });
 
 export class DeleteProductController {
   constructor(private readonly deleteProductUseCase: DeleteProductUseCase) { }
 
-  async handle({ body }: IRequest): Promise<IResponse> {
-    console.log(body);
+  async handle({ params }: IRequest): Promise<IResponse> {
+
     try {
-      const { id } = schema.parse(body);
-      console.log(id);
+      const { id } = schema.parse(params);
       await this.deleteProductUseCase.execute({ id });
     } catch (error) {
 
