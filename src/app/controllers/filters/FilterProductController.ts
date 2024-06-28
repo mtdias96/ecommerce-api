@@ -17,7 +17,7 @@ export class FilterProductController{
         body: filteredProduct
       };
     }catch{
-      throw new Error('Nao foi');
+      throw new Error('Error');
     }
   }
 }
