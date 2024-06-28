@@ -1,7 +1,6 @@
 import { ZodError, z } from 'zod';
 import { IRequest, IResponse } from '../../interfaces/IController';
-import { CreateCategoryUseCase } from '../../useCases/product/CreateCategoryUseCase';
-
+import { CreateCategoryUseCase } from '../../useCases/category/CreateCategoryUseCase';
 
 const schema = z.object({
   name: z.string(),

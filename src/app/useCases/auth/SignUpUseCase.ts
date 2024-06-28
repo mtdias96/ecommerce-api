@@ -6,7 +6,7 @@ import { prismaClient } from '../../libs/prismaClient';
 
 
 interface IInput {
-  fullname: string;
+  name: string;
   email: string;
   password: string;
 }
@@ -19,7 +19,7 @@ interface IOutput {
 export class SignUpUseCase {
   constructor(private readonly salt: number) { }
 
-  async execute({ fullname,email, password }: IInput): Promise<IOutput> {
+  async execute({ name,email, password }: IInput): Promise<IOutput> {
 
     const accountsAlreadyExists = await prismaClient.user.findUnique({
       where: { email }
@@ -33,7 +33,7 @@ export class SignUpUseCase {
 
     await prismaClient.user.create({
       data: {
-        fullname,
+        name,
         email,
         password: hashedPassword
       }

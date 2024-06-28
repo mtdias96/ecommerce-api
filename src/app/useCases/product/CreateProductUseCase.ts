@@ -1,15 +1,26 @@
 import { ProductAlreadyExists } from '../../errors/product/ProductAlreadyExists';
-import { IProduct } from '../../interfaces/IController';
+import { ICreateProductInput } from '../../interfaces/IProducts';
+
 import { prismaClient } from '../../libs/prismaClient';
 
 type IOutput = void;
 
-export class CreateProductUseCase {
 
-  async excecute({ name, price, color, categoryId, image, quantity, size, description, brand }: IProduct): Promise<IOutput> {
+export class CreateProductUseCase {
+  async excecute({
+    name,
+    price,
+    color,
+    categoryId,
+    image,
+    description,
+    gender,
+    variations,
+    brandProduct,
+  }: ICreateProductInput): Promise<IOutput> {
     const productAlreadyExists = await prismaClient.product.findFirst({
       where: {
-        name,
+        name
       }
     });
 
@@ -22,12 +33,19 @@ export class CreateProductUseCase {
         name,
         price,
         color,
-        category: { connect: { id: categoryId } },
         image,
-        quantity,
-        size,
+        gender,
         description,
-        brand
+        brandId: brandProduct.id,
+        categoryId,
+        variations: {
+          createMany: {
+            data: variations.map((variation) => ({
+              size: variation.size,
+              quantity: variation.quantity,
+            }))
+          }
+        },
       }
     });
   }

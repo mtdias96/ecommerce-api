@@ -1,13 +1,16 @@
-import { IResponse } from '../../interfaces/IController';
+import { IResponse } from '../../interfaces/IMiddleware';
 import { FindByIdUseCase } from '../../useCases/product/FindByIdUseCase';
+
 
 export class FindByIdController {
   constructor(private findByIdUseCase: FindByIdUseCase) { }
 
-  async handle({params}: any): Promise<IResponse> {
+  async handle({params}: any ): Promise<IResponse> {
     try {
-      const id = Number(params.id);
-      const product = await this.findByIdUseCase.execute(id);
+      const id = params.id;
+      const normalizedId = id.replace(/^:/, '');
+
+      const product = await this.findByIdUseCase.execute(normalizedId);
 
       return {
         statusCode: 200,
@@ -16,7 +19,7 @@ export class FindByIdController {
         }
       };
     } catch (error) {
-      throw new Error('Erro');
+      throw new Error('Erro ');
     }
   }
 }
