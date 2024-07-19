@@ -8,8 +8,9 @@ export class FilterProductController{
   async handle({body} : IFilterRequest): Promise<IResponse>{
 
     try{
-      const {brand, color, size} = body;
       console.log(body);
+      const {brand, color, size} = body;
+
       const filteredProduct = await this.filterProductUseCase.execute({brand, color, size});
 
       return {

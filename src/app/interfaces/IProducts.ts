@@ -41,6 +41,7 @@ export interface ICreateProductInput {
     size: string;
     quantity: number;
   }[];
+
   brandProduct: {
     id: string;
     name: string;

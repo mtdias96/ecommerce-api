@@ -45,7 +45,7 @@ app.delete('/produto/deletar/:id', routeAdapter(makeDeleteProductController()));
 app.post('/produto/categories', routeAdapter(makeCreateProductController()));
 
 //Filters
-app.get('/filter', routeAdapter(makeFilterProductController()));
+app.post('/produto/filtro', routeAdapter(makeFilterProductController()));
 
 
 //Servidor

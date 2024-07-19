@@ -23,6 +23,7 @@ export class CreateProductController {
   constructor(private readonly createProductUseCase: CreateProductUseCase) { }
 
   async handle({ body }: IRequest): Promise<IResponse> {
+    console.log(body);
     try {
       const { name, price, color, description, brand, image, categoryId, gender, variations } = schema.parse(body);
 
