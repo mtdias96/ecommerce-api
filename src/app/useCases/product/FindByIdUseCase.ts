@@ -33,7 +33,6 @@ export class FindByIdUseCase {
       return product;
     } catch (error) {
       throw new Error('Produto não encontrado');
-
     }
   }
 }

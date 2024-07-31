@@ -41,15 +41,17 @@ export class FilterProductUseCase {
       },
     });
 
-    // Filtrar as variações para manter apenas as que correspondem ao tamanho filtrado
     const productsWithFilteredVariations = filteredProducts.map(product => {
+      let filteredVariations = product.variations;
+
       if (size) {
-        return {
-          ...product,
-          variations: product.variations.filter(variation => variation.size === size)
-        };
+        filteredVariations = filteredVariations.filter(variation => variation.size === size);
       }
-      return product;
+
+      return {
+        ...product,
+        variations: filteredVariations,
+      };
     });
 
     return productsWithFilteredVariations;

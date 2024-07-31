@@ -6,9 +6,7 @@ export class FilterProductController{
   constructor (private readonly filterProductUseCase: FilterProductUseCase) {}
 
   async handle({body} : IFilterRequest): Promise<IResponse>{
-
     try{
-      console.log(body);
       const {brand, color, size} = body;
 
       const filteredProduct = await this.filterProductUseCase.execute({brand, color, size});
@@ -18,7 +16,7 @@ export class FilterProductController{
         body: filteredProduct
       };
     }catch{
-      throw new Error('Error');
+      throw new Error('Error em filtrar produtos');
     }
   }
 }

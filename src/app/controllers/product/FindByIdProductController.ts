@@ -6,6 +6,7 @@ export class FindByIdController {
   constructor(private findByIdUseCase: FindByIdUseCase) { }
 
   async handle({params}: any ): Promise<IResponse> {
+    console.log(params);
     try {
       const id = params.id;
       const normalizedId = id.replace(/^:/, '');
@@ -19,7 +20,7 @@ export class FindByIdController {
         }
       };
     } catch (error) {
-      throw new Error('Erro ');
+      throw new Error('Erro');
     }
   }
 }
