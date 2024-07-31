@@ -40,13 +40,13 @@ app.get('/perfil', middlewareAdapter(makeAuthenticationMiddleware()));
 //Produto
 app.post('/produto/cadastrar', routeAdapter(makeCreateProductController()));
 app.get('/produto', routeAdapter(makeFindAllProductController()));
-app.get('/produto/:id', routeAdapter(makeFindByIdController()));
 app.delete('/produto/deletar/:id', routeAdapter(makeDeleteProductController()));
 app.post('/produto/categories', routeAdapter(makeCreateProductController()));
 
 //Filters
 app.post('/produto/filtro', routeAdapter(makeFilterProductController()));
 
+app.get('/produto/:id', routeAdapter(makeFindByIdController()));
 
 //Servidor
 app.listen(3001, () => {
