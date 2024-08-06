@@ -11,6 +11,7 @@ import { makeCreateBrandController } from '../factories/brand/makeCreateBrandCon
 import { makeFindAllBrandController } from '../factories/brand/makeFindAllBrandController';
 import { makeCreateCategoryController } from '../factories/categories/makeCreateCategoryController';
 import { makeFindAllCategoryController } from '../factories/categories/makeFindAllCategoryController';
+import { makeCepCalculatorController } from '../factories/cep/makeCepCalculatorController';
 import { makeFilterProductController } from '../factories/filter/makeCreateCategoryController';
 import { makeAuthenticationMiddleware } from '../factories/makeAuthenticationMiddleware';
 import { middlewareAdapter } from './adapters/middlewareAdapter';
@@ -47,6 +48,9 @@ app.post('/produto/categories', routeAdapter(makeCreateProductController()));
 app.post('/produto/filtro', routeAdapter(makeFilterProductController()));
 
 app.get('/produto/:id', routeAdapter(makeFindByIdController()));
+
+//Cep-Calculator
+app.post('/cep/cotacao', routeAdapter(makeCepCalculatorController()));
 
 //Servidor
 app.listen(3001, () => {
