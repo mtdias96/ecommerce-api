@@ -1,4 +1,6 @@
-import { z } from 'zod';
+import { error } from 'console';
+import { z, ZodError } from 'zod';
+import { InvalidCredentials } from '../../errors/auth/InvalidCredentials';
 import { IController, IRequest, IResponse } from '../../interfaces/IController';
 import { CepCalculatorUseCase } from '../../useCases/cep/CepCalculatorUseCase';
 
@@ -16,14 +18,37 @@ export class CepCalculatorController implements IController{
   constructor(private readonly cepCalculatorController: CepCalculatorUseCase){}
 
   async handle({body}: IRequest): Promise<IResponse>{
-    const {fromCep, quantity, toCep} = cepSchema.parse(body);
+    try{
+      const {fromCep, quantity, toCep} = cepSchema.parse(body);
 
-    console.log(fromCep, quantity, toCep);
-    return  {
-      statusCode: 200,
-      body: {
-        body
+      const {resultCepCalculator} = await this.cepCalculatorController.execute({fromCep, quantity, toCep});
+
+      console.log(resultCepCalculator);
+      return{
+        statusCode: 200,
+        body: {
+          resultCepCalculator
+        }
+      };
+
+    }catch(error){
+      if(error instanceof ZodError){
+        return {
+          statusCode: 400,
+          body: error.issues,
+        };
       }
-    };
+    }
+
+    if (error instanceof InvalidCredentials) {
+      return {
+        statusCode: 401,
+        body: {
+          error: 'Invalid credentials',
+        }
+      };
+
+    }
+    throw error;
   }
 }
