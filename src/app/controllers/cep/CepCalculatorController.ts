@@ -1,6 +1,5 @@
 import { error } from 'console';
 import { z, ZodError } from 'zod';
-import { InvalidCredentials } from '../../errors/auth/InvalidCredentials';
 import { IController, IRequest, IResponse } from '../../interfaces/IController';
 import { CepCalculatorUseCase } from '../../useCases/cep/CepCalculatorUseCase';
 
@@ -40,15 +39,6 @@ export class CepCalculatorController implements IController{
       }
     }
 
-    if (error instanceof InvalidCredentials) {
-      return {
-        statusCode: 401,
-        body: {
-          error: 'Invalid credentials',
-        }
-      };
-
-    }
     throw error;
   }
 }
