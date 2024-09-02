@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { env } from '../../app/config/env';
 
-const httpClient  = axios.create({
+const httpClient = axios.create({
   baseURL: 'https://www.melhorenvio.com.br/api/v2/me/shipment/calculate',
   headers: {
     Accept: 'application/json',
