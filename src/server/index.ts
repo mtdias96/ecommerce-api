@@ -54,7 +54,7 @@ app.get('/produto/:id', routeAdapter(makeFindByIdController()));
 app.post('/cep/cotacao', routeAdapter(makeCepCalculatorController()));
 
 //Cep Addreas
-app.get('/cep/endereco', routeAdapter(makeCepAddreasController()));
+app.post('/cep/endereco', routeAdapter(makeCepAddreasController()));
 
 //Servidor
 app.listen(8080, () => {
