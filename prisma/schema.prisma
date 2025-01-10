@@ -3,50 +3,53 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
-  id          String     @id @default(uuid())
-  email       String     @unique
-  password    String
-  name        String
-  isAdmin     Boolean    @default(false)
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  addresses   Address[]
-  orders      Order[]
-}
-
-model Address {
-  id        String   @id @default(uuid())
-  userId    String
-  street    String
-  number    String
-  city      String
-  state     String
-  zip       String
-  user      User     @relation(fields: [userId], references: [id])
+  id        String    @id @default(uuid())
+  email     String    @unique
+  password  String
+  name      String
+  isAdmin   Boolean   @default(false)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  addresses Address[]
   orders    Order[]
 }
 
+model Address {
+  id     String  @id @default(uuid())
+  userId String
+  street String
+  number String
+  city   String
+  state  String
+  zip    String
+  user   User    @relation(fields: [userId], references: [id])
+  orders Order[]
+}
+
 model Category {
-  id          Int     @id @default(autoincrement())
-  name        String
-  products    Product[]
+  id       Int       @id @default(autoincrement())
+  name     String
+  products Product[]
+
   @@index([name])
 }
 
 model Brand {
-  id        String    @id @default(uuid())
-  name      String    @unique
-  products  Product[]
+  id       String    @id @default(uuid())
+  name     String    @unique
+  products Product[]
+
   @@index([name])
 }
 
 model Product {
-  id          String    @id @default(uuid())
+  id          String             @id @default(uuid())
   name        String
   description String
   price       Float
@@ -55,43 +58,44 @@ model Product {
   image       Int[]
   categoryId  Int
   gender      String
-  category    Category @relation(fields: [categoryId], references: [id])
-  brand       Brand    @relation(fields: [brandId], references: [id])
+  category    Category           @relation(fields: [categoryId], references: [id])
+  brand       Brand              @relation(fields: [brandId], references: [id])
   variations  ProductVariation[]
   items       OrderItem[]
+
   @@index([price])
   @@index([brandId])
   @@index([categoryId])
 }
 
 model ProductVariation {
-  id         String   @id @default(uuid())
-  productId  String
-  size       String
-  quantity   Int
-  product    Product  @relation(fields: [productId], references: [id])
+  id        String  @id @default(uuid())
+  productId String
+  size      String
+  quantity  Int
+  product   Product @relation(fields: [productId], references: [id])
 
   @@index([productId])
   @@index([size])
 }
 
 model Order {
-  id          String         @id @default(uuid())
-  userId      String
-  addressId   String?
-  total       Float
-  status      String
-  user        User           @relation(fields: [userId], references: [id])
-  address     Address?       @relation(fields: [addressId], references: [id])
-  items       OrderItem[]
+  id        String      @id @default(uuid())
+  userId    String
+  addressId String?
+  total     Float
+  status    String
+  user      User        @relation(fields: [userId], references: [id])
+  address   Address?    @relation(fields: [addressId], references: [id])
+  items     OrderItem[]
 }
 
 model OrderItem {
-  id          String         @id @default(uuid())
-  orderId     String
-  productId   String
-  quantity    Int
-  price       Float
-  order       Order          @relation(fields: [orderId], references: [id])
-  product     Product?       @relation(fields: [productId], references: [id])
+  id        String   @id @default(uuid())
+  orderId   String
+  productId String
+  quantity  Int
+  price     Float
+  order     Order    @relation(fields: [orderId], references: [id])
+  product   Product? @relation(fields: [productId], references: [id])
 }

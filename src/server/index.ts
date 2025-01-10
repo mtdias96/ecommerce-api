@@ -11,6 +11,7 @@ import { makeCreateBrandController } from '../factories/brand/makeCreateBrandCon
 import { makeFindAllBrandController } from '../factories/brand/makeFindAllBrandController';
 import { makeCreateCategoryController } from '../factories/categories/makeCreateCategoryController';
 import { makeFindAllCategoryController } from '../factories/categories/makeFindAllCategoryController';
+import { makeCepAddreasController } from '../factories/cep/makeCepAddreasController';
 import { makeCepCalculatorController } from '../factories/cep/makeCepCalculatorController';
 import { makeFilterProductController } from '../factories/filter/makeCreateCategoryController';
 import { makeAuthenticationMiddleware } from '../factories/makeAuthenticationMiddleware';
@@ -52,9 +53,12 @@ app.get('/produto/:id', routeAdapter(makeFindByIdController()));
 //Cep-Calculator
 app.post('/cep/cotacao', routeAdapter(makeCepCalculatorController()));
 
+//Cep Addreas
+app.post('/cep/endereco', routeAdapter(makeCepAddreasController()));
+
 //Servidor
-app.listen(3001, () => {
-  console.log('Server started at http://localhost:3001');
+app.listen(8080, () => {
+  console.log('Server started at http://localhost:8080');
 });
 
 
