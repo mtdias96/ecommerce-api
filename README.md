@@ -5,7 +5,7 @@ Este projeto é uma API para um sistema de e-commerce desenvolvido em Node.js co
 ## Funcionalidades
 
 - **Autenticação**: Sistema de autenticação de usuários.
-- **Produtos**: CRUD de produtos.
+- **Produtos**: CRUD de produtos + busca por filtros.
   
 ## Tecnologias Utilizadas
 
